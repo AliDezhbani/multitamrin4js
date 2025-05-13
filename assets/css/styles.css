@@ -26,6 +26,7 @@ body {
 .btn-get-started {
     background-color: #ff5733;
     color: #fff;
+    font-weight: bold;
     border-radius: 5px;
     padding: 8px 20px;
     font-size: 16px;
