@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>فرم ثبت‌نام</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-border {
+            border-color: red !important;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="form-container">
+            <h4 class="text-center mb-4">فرم ثبت‌نام</h4>
+            <form id="registrationForm" novalidate>
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">نام و نام خانوادگی</label>
+                    <input type="text" class="form-control" id="fullName">
+                    <div class="error-message" id="fullNameError"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">شماره تلفن</label>
+                    <input type="tel" class="form-control" id="phone">
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">آدرس</label>
+                    <textarea class="form-control" id="address" rows="2"></textarea>
+                    <div class="error-message" id="addressError"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">رمز عبور</label>
+                    <input type="password" class="form-control" id="password">
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">تکرار رمز عبور</label>
+                    <input type="password" class="form-control" id="confirmPassword">
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">ثبت‌نام</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // حذف استایل خطاها
+            const inputs = ['fullName', 'phone', 'address', 'password', 'confirmPassword'];
+            inputs.forEach(id => {
+                document.getElementById(id).classList.remove('error-border');
+                document.getElementById(id + 'Error').innerText = '';
+            });
+
+            // دریافت مقادیر
+            const fullName = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            let isValid = true;
+
+            // بررسی فیلدهای خالی
+            if (!fullName) {
+                showError('fullName', 'لطفاً نام و نام خانوادگی را وارد کنید.');
+                isValid = false;
+            }
+
+            if (!phone) {
+                showError('phone', 'لطفاً شماره تلفن را وارد کنید.');
+                isValid = false;
+            }
+
+            if (!address) {
+                showError('address', 'لطفاً آدرس را وارد کنید.');
+                isValid = false;
+            }
+
+            // بررسی کامل رمز عبور
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+            if (!password) {
+                showError('password', 'لطفاً رمز عبور را وارد کنید.');
+                isValid = false;
+            } else if (!passwordRegex.test(password)) {
+                showError('password', 'رمز عبور باید حداقل ۸ کاراکتر و شامل حروف بزرگ، کوچک، عدد و علامت خاص باشد.');
+                isValid = false;
+            }
+
+            if (!confirmPassword) {
+                showError('confirmPassword', 'لطفاً تکرار رمز عبور را وارد کنید.');
+                isValid = false;
+            } else if (password !== confirmPassword) {
+                showError('confirmPassword', 'رمز عبور و تکرار آن یکسان نیستند.');
+                isValid = false;
+            }
+
+            // اگر همه چیز درست بود
+            if (isValid) {
+                alert('فرم با موفقیت ارسال شد!');
+                form.reset();
+            }
+        });
+
+        function showError(id, message) {
+            const input = document.getElementById(id);
+            input.classList.add('error-border');
+            document.getElementById(id + 'Error').innerText = message;
+        }
+    </script>
+
+</body>
+
+</html>
